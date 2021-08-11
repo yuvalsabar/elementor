@@ -26,6 +26,8 @@ class Theme_Loader {
 			'/classes/class-product-handler.php',
 			'/classes/class-product.php',
 			'/classes/class-shortcodes.php',
+			'/classes/class-rest-api-base.php',
+			'/classes/class-product-rest-api.php',
 		];
 		foreach ( $classes_map as $class ) {
 			require CHILD_THEME_PATH . $class;
@@ -36,11 +38,12 @@ class Theme_Loader {
 	 * Add actions
 	 */
 	public function add_actions() {
+		add_action( 'init', [ 'Shortcodes', 'init' ] );
+		add_action( 'init', [ $this, 'load_rest_api' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+		add_action( 'wp_head', [ $this, 'mobile_address_bar_color' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_styles' ], 100 );
-		add_action( 'init', [ 'Shortcodes', 'init' ] );
-		add_action( 'wp_head', [ $this, 'mobile_address_bar_color' ] );
 	}
 
 	/**
@@ -111,6 +114,13 @@ class Theme_Loader {
 		}
 
 		return $shortcode;
+	}
+
+	/**
+	 * Load REST Api
+	 */
+	public function load_rest_api() {
+		new Product_Rest_Api();
 	}
 
 }

@@ -8,3 +8,38 @@
  Version:      1.0.0
  Text Domain:  twentytwentychild
 */
+
+.container {
+    width: 1000px;
+    max-width: 100%;
+    padding: 0 15px;
+    margin: auto;
+}
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+.products .product {
+    width: 33.3333%;
+    padding: 0 15px;
+	margin-bottom: 30px;
+}
+
+.products .product__in {
+    background: #e5e5e5;
+	height: 100%;
+}
+
+.products .product__image img {
+    object-fit: cover;
+	height: 200px;
+}
+
+@media only screen and (max-width: 960px) {
+    .products .product {
+        width: 100%;
+    }
+}

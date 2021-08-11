@@ -25,6 +25,7 @@ class Theme_Loader {
 			'/classes/class-metabox.php',
 			'/classes/class-product-handler.php',
 			'/classes/class-product.php',
+			'/classes/class-shortcodes.php',
 		];
 		foreach ( $classes_map as $class ) {
 			require CHILD_THEME_PATH . $class;
@@ -38,6 +39,7 @@ class Theme_Loader {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_styles' ], 100 );
+		add_action( 'init', [ 'Shortcodes', 'init' ] );
 	}
 
 	/**

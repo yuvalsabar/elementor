@@ -40,12 +40,14 @@ class Theme_Loader {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_styles' ], 100 );
 		add_action( 'init', [ 'Shortcodes', 'init' ] );
+		add_action( 'wp_head', [ $this, 'mobile_address_bar_color' ] );
 	}
 
 	/**
 	 * Add filters
 	 */
 	public function add_filters() {
+		add_filter( 'product_box_shortcode_filter', [ $this, 'filter_product_box_shortcode' ], 10, 2 );
 		add_filter( 'show_admin_bar', [ $this, 'remove_user_admin_bar' ] );
 	}
 
@@ -60,14 +62,14 @@ class Theme_Loader {
 	 * Enqueue scripts on the admin dashboard
 	 */
 	public function enqueue_admin_scripts() {
-		wp_enqueue_script( 'meta-boxes', CHILD_ASSETS_JS . 'meta-boxes.js', array(), THEME_VER, true );
+		wp_enqueue_script( 'meta-boxes', CHILD_ASSETS_JS . 'meta-boxes.js', [], THEME_VER, true );
 	}
 
 	/**
 	 * Enqueue styles on the admin dashboard
 	 */
 	public function enqueue_admin_styles() {
-		wp_enqueue_style( 'admin-style', CHILD_ASSETS_CSS . 'admin.css', array(), THEME_VER );
+		wp_enqueue_style( 'admin-style', CHILD_ASSETS_CSS . 'admin.css', [], THEME_VER );
 	}
 
 	/**
@@ -87,6 +89,28 @@ class Theme_Loader {
 		}
 
 		return $show;
+	}
+
+	/**
+	 * Change mobile address bar color
+	 */
+	public function mobile_address_bar_color() {
+		echo '<meta name="theme-color" content="#007bff" />';
+	}
+
+	/**
+	 * Filter producr box shortcode (for this example, I will override post id of number 41)
+	 *
+	 * @param string $shortcode Shortcode tag
+	 * @param array $atts Shortcode attributes
+	 * @return void
+	 */
+	public function filter_product_box_shortcode( $shortcode, $atts ) {
+		if ( 41 === (int) $atts['product_id'] ) {
+			$shortcode = "Product ID is {$atts['product_id']}";
+		}
+
+		return $shortcode;
 	}
 
 }
